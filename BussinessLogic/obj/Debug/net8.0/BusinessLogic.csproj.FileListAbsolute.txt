@@ -1,0 +1,12 @@
+D:\проги\CRUDAPI\BusinessLogic\bin\Debug\net8.0\BusinessLogic.deps.json
+D:\проги\CRUDAPI\BusinessLogic\bin\Debug\net8.0\BusinessLogic.dll
+D:\проги\CRUDAPI\BusinessLogic\bin\Debug\net8.0\BusinessLogic.pdb
+D:\проги\CRUDAPI\BusinessLogic\obj\Debug\net8.0\BusinessLogic.csproj.AssemblyReference.cache
+D:\проги\CRUDAPI\BusinessLogic\obj\Debug\net8.0\BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+D:\проги\CRUDAPI\BusinessLogic\obj\Debug\net8.0\BusinessLogic.AssemblyInfoInputs.cache
+D:\проги\CRUDAPI\BusinessLogic\obj\Debug\net8.0\BusinessLogic.AssemblyInfo.cs
+D:\проги\CRUDAPI\BusinessLogic\obj\Debug\net8.0\BusinessLogic.csproj.CoreCompileInputs.cache
+D:\проги\CRUDAPI\BusinessLogic\obj\Debug\net8.0\BusinessLogic.dll
+D:\проги\CRUDAPI\BusinessLogic\obj\Debug\net8.0\refint\BusinessLogic.dll
+D:\проги\CRUDAPI\BusinessLogic\obj\Debug\net8.0\BusinessLogic.pdb
+D:\проги\CRUDAPI\BusinessLogic\obj\Debug\net8.0\ref\BusinessLogic.dll

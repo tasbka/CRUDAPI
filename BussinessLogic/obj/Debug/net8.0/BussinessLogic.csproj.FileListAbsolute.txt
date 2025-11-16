@@ -1,0 +1,15 @@
+D:\проги\CRUDAPI\BussinessLogic\bin\Debug\net8.0\BussinessLogic.deps.json
+D:\проги\CRUDAPI\BussinessLogic\bin\Debug\net8.0\BussinessLogic.dll
+D:\проги\CRUDAPI\BussinessLogic\bin\Debug\net8.0\BussinessLogic.pdb
+D:\проги\CRUDAPI\BussinessLogic\bin\Debug\net8.0\DataAccess.dll
+D:\проги\CRUDAPI\BussinessLogic\bin\Debug\net8.0\DataAccess.pdb
+D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\BussinessLogic.csproj.AssemblyReference.cache
+D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\BussinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\BussinessLogic.AssemblyInfoInputs.cache
+D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\BussinessLogic.AssemblyInfo.cs
+D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\BussinessLogic.csproj.CoreCompileInputs.cache
+D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\Bussines.273F0448.Up2Date
+D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\BussinessLogic.dll
+D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\refint\BussinessLogic.dll
+D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\BussinessLogic.pdb
+D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\ref\BussinessLogic.dll
