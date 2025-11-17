@@ -112,3 +112,4 @@ D:\проги\CRUDAPI\WebApi\obj\Debug\net8.0\ref\WebApi.dll
 D:\проги\CRUDAPI\WebApi\bin\Debug\net8.0\BussinessLogic.dll
 D:\проги\CRUDAPI\WebApi\bin\Debug\net8.0\BussinessLogic.pdb
 D:\проги\CRUDAPI\WebApi\obj\Debug\net8.0\WebApi.csproj.Up2Date
+D:\проги\CRUDAPI\WebApi\obj\Debug\net8.0\WebApi.sourcelink.json

@@ -13,3 +13,4 @@ D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\BussinessLogic.dll
 D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\refint\BussinessLogic.dll
 D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\BussinessLogic.pdb
 D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\ref\BussinessLogic.dll
+D:\проги\CRUDAPI\BussinessLogic\obj\Debug\net8.0\BussinessLogic.sourcelink.json
