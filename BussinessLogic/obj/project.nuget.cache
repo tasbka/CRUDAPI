@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "BiYK/Rvlu0w=",
+  "dgSpecHash": "ue4g9QS6cZo=",
   "success": true,
   "projectFilePath": "D:\\проги\\CRUDAPI\\BussinessLogic\\BussinessLogic.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\hukak\\.nuget\\packages\\microsoft.entityframeworkcore\\8.0.21\\microsoft.entityframeworkcore.8.0.21.nupkg.sha512",
-    "C:\\Users\\hukak\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\8.0.21\\microsoft.entityframeworkcore.abstractions.8.0.21.nupkg.sha512",
-    "C:\\Users\\hukak\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\8.0.21\\microsoft.entityframeworkcore.analyzers.8.0.21.nupkg.sha512",
+    "C:\\Users\\hukak\\.nuget\\packages\\microsoft.entityframeworkcore\\8.0.11\\microsoft.entityframeworkcore.8.0.11.nupkg.sha512",
+    "C:\\Users\\hukak\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\8.0.11\\microsoft.entityframeworkcore.abstractions.8.0.11.nupkg.sha512",
+    "C:\\Users\\hukak\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\8.0.11\\microsoft.entityframeworkcore.analyzers.8.0.11.nupkg.sha512",
     "C:\\Users\\hukak\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\8.0.11\\microsoft.entityframeworkcore.relational.8.0.11.nupkg.sha512",
     "C:\\Users\\hukak\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\8.0.0\\microsoft.extensions.caching.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\hukak\\.nuget\\packages\\microsoft.extensions.caching.memory\\8.0.1\\microsoft.extensions.caching.memory.8.0.1.nupkg.sha512",

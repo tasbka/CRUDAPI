@@ -1,5 +1,4 @@
 ﻿using BussinessLogic;
-using DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 
@@ -14,29 +13,29 @@ public class NoteController(INoteService noteService) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] AddNoteRequest noteRequest)
     {
-        await noteService.CreateAsync(noteRequest.Text);
+        await noteService.CreateAsync(noteRequest.UserId, noteRequest.Text);
         return Ok();
     }
     //получение заметки по ид
-    [HttpGet( "{id:guid}")]
+    [HttpGet( "{id:int}")]
 
-    public async Task<IActionResult> GetNoteAsync([FromRoute]Guid id)
+    public async Task<IActionResult> GetNoteAsync([FromRoute]int id)
     {
         var result = await noteService.GetByIdAsync(id);
         return Ok(result);
     }
     
-    [HttpPut( "{id:guid}")]
+    [HttpPut( "{id:int}")]
 
-    public async Task<IActionResult> UpdateNoteAsync([FromRoute]Guid id, CancellationToken newText)
+    public async Task<IActionResult> UpdateNoteAsync([FromRoute]int id, CancellationToken newText)
     {
         await noteService.GetByIdAsync(id, newText);
         return NoContent();
     }
     
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id:int}")]
 
-    public async Task<IActionResult> DeleteNoteAsync([FromRoute]Guid id)
+    public async Task<IActionResult> DeleteNoteAsync([FromRoute]int id)
     {
         await noteService.DeleteAsync(id);
         return NoContent();

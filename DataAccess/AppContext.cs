@@ -24,17 +24,19 @@ public class AppContext(DbContextOptions<AppContext> options) : DbContext(option
             entity.Property(u => u.PasswordHash).IsRequired();
         });
 
+        // Конфигурация для Note
         modelBuilder.Entity<Note>(entity =>
         {
             entity.HasKey(n => n.Id);
             entity.Property(n => n.Text).HasMaxLength(100);
-            base.OnModelCreating(modelBuilder);
             
-            //связь заметок с пользователем
+            //связь заметок с пользователем (многие-к-одному)
             entity.HasOne(n => n.User)
                 .WithMany(u => u.Notes)
                 .HasForeignKey(n => n.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
+        
+        base.OnModelCreating(modelBuilder);
     }
 }
