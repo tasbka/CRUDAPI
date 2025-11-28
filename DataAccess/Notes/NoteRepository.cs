@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
 
-namespace DataAccess;
+using Microsoft.EntityFrameworkCore;
+
+namespace DataAccess.Notes;
 
 internal class NoteRepository(AppContext context) : INoteRepository
 {
@@ -13,29 +15,56 @@ internal class NoteRepository(AppContext context) : INoteRepository
        await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<Note?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<Note?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await context.Notes.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        return await context.Notes
+            .Include(p => p.Author)
+            .Include(p => p.Category)
+            .Include(p => p.Likes)
+            .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
-
+    
+    public async Task<List<Note>> GetByCategoryIdAsync(Guid categoryId, CancellationToken cancellationToken = default)
+    {
+        return await context.Notes
+            .Where(p => p.CategoryId == categoryId)
+            .Include(p => p.Author)
+            .Include(p => p.Category)
+            .OrderByDescending(p => p.IsPinned)
+            .ThenByDescending(p => p.Created)
+            .ToListAsync(cancellationToken);
+    }
+    
     public async Task<List<Note>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         return await context.Notes
-            .Where(x => x.UserId == userId)
-            .Include(n => n.User)
+            .Where(x => x.AuthorId == userId)
+            .Include(n => n.Author)
             .OrderByDescending(n => n.Created)
             .ToListAsync(cancellationToken);
     }
     
-    public async Task<List<Note>> GetAllAsync(CancellationToken cancellationToken = default)
+    /*public async Task<List<Note>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await context.Notes
-            .Include(n => n.User)
+            .Include(n => n.Author)
             .OrderByDescending(n => n.Created)
+            .ToListAsync(cancellationToken);
+    }*/
+    //удалила из интерфейсв
+    
+    public async Task<List<Note>> GetPinnedAsync(CancellationToken cancellationToken = default)
+    {
+        return await context.Notes
+            .Where(p => p.IsPinned)
+            .Include(p => p.Author)
+            .Include(p => p.Category)
+            .OrderByDescending(p => p.Created)
             .ToListAsync(cancellationToken);
     }
     
-    public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default)
+    
+    public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await context.Notes
             .AnyAsync(x => x.Id == id, cancellationToken);

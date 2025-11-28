@@ -12,7 +12,7 @@ namespace DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Text",
+                name: "Content",
                 table: "Notes",
                 type: "character varying(100)",
                 maxLength: 100,
@@ -88,7 +88,7 @@ namespace DataAccess.Migrations
                 table: "Notes");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Text",
+                name: "Content",
                 table: "Notes",
                 type: "character varying(100)",
                 maxLength: 100,

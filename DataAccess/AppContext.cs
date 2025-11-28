@@ -1,4 +1,5 @@
 ﻿using DataAccess.Users;
+using DataAccess.Category;
 using Microsoft.EntityFrameworkCore;
 //using DataAccess.Notes;
 
@@ -8,34 +9,70 @@ namespace DataAccess;
 
 public class AppContext(DbContextOptions<AppContext> options) : DbContext(options)
 {
-    public DbSet<Note> Notes { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Category.Category> Categories { get; set; }
+    public DbSet<Note> Notes { get; set; }
+    public DbSet<PostLike> PostLikes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // User  конфигурация
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(u => u.Id);
             entity.HasIndex(u => u.Username).IsUnique();
             entity.HasIndex(u => u.Email).IsUnique();
-            
-            entity.Property(u => u.Username).IsRequired().HasMaxLength(50);
-            entity.Property(u => u.Email).IsRequired().HasMaxLength(255);
-            entity.Property(u => u.PasswordHash).IsRequired();
+        });
+
+        // Category  конфигурация
+        modelBuilder.Entity<Category.Category>(entity =>
+        {
+            entity.HasKey(c => c.Id);
+            entity.HasIndex(c => c.Name).IsUnique();
         });
 
         // Конфигурация для Note
         modelBuilder.Entity<Note>(entity =>
         {
             entity.HasKey(n => n.Id);
-            entity.Property(n => n.Text).HasMaxLength(100);
+            //entity.Property(n => n.Content).HasMaxLength(100);
+            
+            entity.HasOne(p => p.Category)
+                .WithMany(c => c.Notes)
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
             
             //связь заметок с пользователем (многие-к-одному)
-            entity.HasOne(n => n.User)
+            entity.HasOne(n => n.Author)
                 .WithMany(u => u.Notes)
-                .HasForeignKey(n => n.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(n => n.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
+        
+        // PostLike конфигурация
+        modelBuilder.Entity<PostLike>(entity =>
+        {
+            entity.HasKey(pl => pl.PostId);
+            
+            entity.HasOne(pl => pl.Note)
+                .WithMany(p => p.Likes)
+                .HasForeignKey(pl => pl.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
+                  
+            entity.HasOne(pl => pl.User)
+                .WithMany(u => u.PostLikes)
+                .HasForeignKey(pl => pl.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+                  
+            entity.HasIndex(pl => new { pl.PostId, pl.UserId }).IsUnique();
+        });
+        
+        modelBuilder.Entity<Category.Category>().HasData(
+            new Category.Category { Id = Guid.NewGuid(), Name = "API Docs", Description = "Обсуждения web API и разработки", PostCount = 45, OrderIndex = 1 },
+            new Category.Category { Id = Guid.NewGuid(), Name = "Обсуждения", Description = "Общие обсуждения", PostCount = 23, OrderIndex = 2 },
+            new Category.Category { Id = Guid.NewGuid(), Name = "Вопросы", Description = "Задавайте вопросы", PostCount = 67, OrderIndex = 3 },
+            new Category.Category { Id = Guid.NewGuid(), Name = "Идеи", Description = "Предложения и идеи", PostCount = 12, OrderIndex = 4 }
+        );
         
         base.OnModelCreating(modelBuilder);
     }

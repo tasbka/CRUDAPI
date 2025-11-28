@@ -17,9 +17,9 @@ public class NoteController(INoteService noteService) : ControllerBase
         return Ok();
     }
     //получение заметки по ид
-    [HttpGet( "{id:int}")]
+    [HttpGet( "{id:guid}")]
 
-    public async Task<IActionResult> GetNoteAsync([FromRoute]int id)
+    public async Task<IActionResult> GetNoteAsync([FromRoute]Guid id)
     {
         var result = await noteService.GetByIdAsync(id);
         return Ok(result);
@@ -27,7 +27,7 @@ public class NoteController(INoteService noteService) : ControllerBase
     
     [HttpPut( "{id:int}")]
 
-    public async Task<IActionResult> UpdateNoteAsync([FromRoute]int id, CancellationToken newText)
+    public async Task<IActionResult> UpdateNoteAsync([FromRoute]Guid id, CancellationToken newText)
     {
         await noteService.GetByIdAsync(id, newText);
         return NoContent();
@@ -35,7 +35,7 @@ public class NoteController(INoteService noteService) : ControllerBase
     
     [HttpDelete("{id:int}")]
 
-    public async Task<IActionResult> DeleteNoteAsync([FromRoute]int id)
+    public async Task<IActionResult> DeleteNoteAsync([FromRoute]Guid id)
     {
         await noteService.DeleteAsync(id);
         return NoContent();

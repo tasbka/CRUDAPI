@@ -33,7 +33,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Text")
+                    b.Property<string>("Content")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
