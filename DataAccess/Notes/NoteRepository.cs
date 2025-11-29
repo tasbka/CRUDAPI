@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Notes;
 
-internal class NoteRepository(AppContext context) : INoteRepository
+public class NoteRepository(AppContext context) : INoteRepository
 {
     private INoteRepository _noteRepositoryImplementation;
 

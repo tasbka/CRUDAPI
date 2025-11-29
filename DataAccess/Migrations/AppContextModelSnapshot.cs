@@ -33,7 +33,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Content")
+                    b.Property<string>("Text")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
@@ -47,7 +47,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Notes", (string)null);
                 });
 
             modelBuilder.Entity("DataAccess.Users.User", b =>
@@ -81,7 +81,7 @@ namespace DataAccess.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("DataAccess.Note", b =>

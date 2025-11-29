@@ -1,32 +1,52 @@
 ﻿using BussinessLogic.Exceptions;
 using DataAccess;
+using DataAccess.Category;
 using DataAccess.Users;
 
 namespace BussinessLogic;
 
-internal class NoteService(INoteRepository noteRepository, IUserRepository userRepository) : INoteService
+public class NoteService(INoteRepository noteRepository, IUserRepository userRepository,ICategoryRepository categoryRepository) : INoteService
 {
     
-    public async Task CreateAsync(Guid userId, string text, CancellationToken cancellationToken = default)
+    public async Task CreateAsync(Guid userId, Guid categoryId, string title, string content, CancellationToken cancellationToken = default)
     {
-        
+        // Проверка на существование пользователя
         var user = await userRepository.GetByIdAsync(userId, cancellationToken);
         if (user == null)
         {
             throw new CrudApiNotFoundException<User>();
         }
 
+        // Проверка на существование категории
+        var category = await categoryRepository.GetByIdAsync(categoryId, cancellationToken);
+        if (category == null)
+        {
+            throw new CrudApiNotFoundException<Category>();
+        }
+
         var note = new Note
         {
-            Content = text,
+            Title = title,           // Добавлен заголовок
+            Content = content,       // Контент
             AuthorId = userId,
+            CategoryId = categoryId, // Добавлена категория
             Created = DateTime.UtcNow,
             Updated = DateTime.UtcNow
         };
-
         await noteRepository.CreateAsync(note, cancellationToken);
-    }
 
+        // Обновляем счетчик постов пользователя 
+        user.PostCount++;
+    
+        // Автоматическое повышение до Expert при достижении 10 постов
+        if (user.PostCount >= 10 && user.Role == "Novice")
+        {
+            user.Role = "Expert";
+        }
+    
+        await userRepository.UpdateAsync(user, cancellationToken);
+    }
+    
     public async Task<string> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var note = await noteRepository.GetByIdAsync(id, cancellationToken);
@@ -35,16 +55,17 @@ internal class NoteService(INoteRepository noteRepository, IUserRepository userR
             throw new ArgumentException("Note not found");
         }
 
-        return $"Note: {note.Id}, User: {note.Author?.Username}, Created: {note.Created}";
+        return $"Title: {note.Title}\nContent: {note.Content}"; 
     }
 
-    public async Task UpdateAsync(Guid id, string newText, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(Guid id, string newTitle, string newText,  CancellationToken cancellationToken = default)
     {
         var note = await noteRepository.GetByIdAsync(id, cancellationToken);
         if (note == null)
         {
             throw new ArgumentException("Note not found");
         }
+        note.Title = newTitle;
         note.Content = newText;
         note.Updated = DateTime.UtcNow;
         
