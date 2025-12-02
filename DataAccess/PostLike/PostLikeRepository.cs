@@ -13,9 +13,9 @@ public class PostLikeRepository(AppContext context) : IPostLikeRepository
 
     public async Task<PostLike?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        //тут было id вместо PostId
+        //тут было id вместо Id
         return await context.PostLikes
-            .FirstOrDefaultAsync(nl => nl.PostId == id, cancellationToken);
+            .FirstOrDefaultAsync(nl => nl.Id == id, cancellationToken);
     }
 
     public async Task<PostLike?> GetByNoteAndUserAsync(Guid noteId, Guid userId, CancellationToken cancellationToken = default)

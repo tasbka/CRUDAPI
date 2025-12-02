@@ -23,14 +23,14 @@ public class AppContext(DbContextOptions<AppContext> options) : DbContext(option
             entity.HasIndex(u => u.Username).IsUnique();
             entity.HasIndex(u => u.Email).IsUnique();
         });
-
+        
         // Category  конфигурация
         modelBuilder.Entity<Category.Category>(entity =>
         {
             entity.HasKey(c => c.Id);
             entity.HasIndex(c => c.Name).IsUnique();
         });
-
+        
         // Конфигурация для Note
         modelBuilder.Entity<Note>(entity =>
         {
@@ -52,11 +52,11 @@ public class AppContext(DbContextOptions<AppContext> options) : DbContext(option
         // PostLike конфигурация
         modelBuilder.Entity<PostLike>(entity =>
         {
-            entity.HasKey(pl => pl.PostId);
+            entity.HasKey(pl => pl.Id);
             
             entity.HasOne(pl => pl.Note)
                 .WithMany(p => p.Likes)
-                .HasForeignKey(pl => pl.PostId)
+                .HasForeignKey(pl => pl.NoteId)
                 .OnDelete(DeleteBehavior.Cascade);
                   
             entity.HasOne(pl => pl.User)
@@ -64,15 +64,16 @@ public class AppContext(DbContextOptions<AppContext> options) : DbContext(option
                 .HasForeignKey(pl => pl.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
                   
-            entity.HasIndex(pl => new { pl.PostId, pl.UserId }).IsUnique();
+            entity.HasIndex(pl => new { pl.NoteId, pl.UserId }).IsUnique();
         });
-        
-        modelBuilder.Entity<Category.Category>().HasData(
+
+
+       /* modelBuilder.Entity<Category.Category>().HasData(
             new Category.Category { Id = Guid.NewGuid(), Name = "API Docs", Description = "Обсуждения web API и разработки", PostCount = 45, OrderIndex = 1 },
             new Category.Category { Id = Guid.NewGuid(), Name = "Обсуждения", Description = "Общие обсуждения", PostCount = 23, OrderIndex = 2 },
             new Category.Category { Id = Guid.NewGuid(), Name = "Вопросы", Description = "Задавайте вопросы", PostCount = 67, OrderIndex = 3 },
             new Category.Category { Id = Guid.NewGuid(), Name = "Идеи", Description = "Предложения и идеи", PostCount = 12, OrderIndex = 4 }
-        );
+        );*/
         
         base.OnModelCreating(modelBuilder);
     }

@@ -9,8 +9,9 @@ using DataAccess.Notes;
 using WebApi.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDataAccess();
+builder.Services.AddDataAccess(connectionString);
 builder.Services.AddBusinessLogic();
 builder.Services.AddControllers(opts => opts.Filters.Add<ExceptionFilter>());
 builder.Services.AddSwaggerGen();
