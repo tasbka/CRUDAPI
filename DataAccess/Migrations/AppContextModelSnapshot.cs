@@ -53,6 +53,44 @@ namespace DataAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("cb257c7d-aeb3-4233-a3ce-0fe419f956e0"),
+                            CreatedAt = new DateTime(2025, 12, 2, 16, 5, 31, 657, DateTimeKind.Utc).AddTicks(8110),
+                            Description = "Обсуждения web API и разработки",
+                            Name = "API Docs",
+                            OrderIndex = 1,
+                            PostCount = 45
+                        },
+                        new
+                        {
+                            Id = new Guid("fa709d13-5856-47c3-a557-3f2949fe7608"),
+                            CreatedAt = new DateTime(2025, 12, 2, 16, 5, 31, 657, DateTimeKind.Utc).AddTicks(8119),
+                            Description = "Общие обсуждения",
+                            Name = "Обсуждения",
+                            OrderIndex = 2,
+                            PostCount = 23
+                        },
+                        new
+                        {
+                            Id = new Guid("f9768b23-71a9-493f-a04e-5e5f7db54fb3"),
+                            CreatedAt = new DateTime(2025, 12, 2, 16, 5, 31, 657, DateTimeKind.Utc).AddTicks(8124),
+                            Description = "Задавайте вопросы",
+                            Name = "Вопросы",
+                            OrderIndex = 3,
+                            PostCount = 67
+                        },
+                        new
+                        {
+                            Id = new Guid("de026b5f-230b-4ef4-b318-a2bef0bcbdc2"),
+                            CreatedAt = new DateTime(2025, 12, 2, 16, 5, 31, 657, DateTimeKind.Utc).AddTicks(8129),
+                            Description = "Предложения и идеи",
+                            Name = "Идеи",
+                            OrderIndex = 4,
+                            PostCount = 12
+                        });
                 });
 
             modelBuilder.Entity("DataAccess.Note", b =>
