@@ -15,10 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
+    options.AddPolicy(MyAllowSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000")
+            policy.AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
@@ -46,9 +46,7 @@ builder.Services.AddScoped<INoteService, NoteService>();
 //builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 var app = builder.Build();
-    ////+
 
-////+
 app.UseSwagger();
 app.UseSwaggerUI();
 

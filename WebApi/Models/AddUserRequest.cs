@@ -4,11 +4,7 @@ namespace WebApi.Models;
 
 public class AddUserRequest
 {
-    /*
-    public string Username { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
-    */
+
     [Required(ErrorMessage = "Имя пользователя обязательно")]
     [StringLength(50, MinimumLength = 3, ErrorMessage = "Имя пользователя должно быть от 3 до 50 символов")]
     [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Имя пользователя может содержать только буквы, цифры и подчеркивания")]

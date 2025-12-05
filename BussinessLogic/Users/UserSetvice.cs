@@ -45,6 +45,8 @@ public class UserService(IUserRepository userRepository) : IUserService
         return MapToDto(user);
     }
 
+    
+    
     public async Task<UserDto> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var user = await userRepository.GetByIdAsync(id, cancellationToken);
@@ -55,20 +57,18 @@ public class UserService(IUserRepository userRepository) : IUserService
         return MapToDto(user);
         //return $"Username: {user.Username}, Email: {user.Email}, Created: {user.CreatedAt:yyyy-MM-dd HH:mm}";
     }
-    public async Task<UserDto?> AuthenticateAsync(string email, string password, CancellationToken cancellationToken = default)
+    public async Task<UserDto?> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default)
     {
-        var user = await userRepository.GetByEmailAsync(email, cancellationToken);
+        var user = await userRepository.GetByUsernameAsync(username, cancellationToken);
         
         if (user == null || !user.IsActive)
             return null;
-            
-        // Простая проверка пароля (без хеширования)
+        
         if (user.PasswordHash != password)
             return null;
             
         return MapToDto(user);
     }
-    
     
     public async Task<UserDto> UpdateAsync(Guid id, string? newUsername, string? newEmail, string? newPassword, CancellationToken cancellationToken = default)
     {

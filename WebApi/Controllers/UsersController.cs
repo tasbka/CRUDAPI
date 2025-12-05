@@ -90,19 +90,34 @@ public class UsersController : ControllerBase
         }
         
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginUser request)
         {
             try
             {
-                var user = await _userService.AuthenticateAsync(request.Email, request.Password);
+                if (string.IsNullOrWhiteSpace(request.Username))
+                    return BadRequest(new 
+                    {
+                        success = false,
+                        message = "Введите имя пользователя"
+                    });
+            
+                if (string.IsNullOrWhiteSpace(request.Password))
+                    return BadRequest(new 
+                    {
+                        success = false,
+                        message = "Введите пароль"
+                    });
                 
+                var user = await _userService.AuthenticateAsync(request.Username, request.Password);
+        
                 if (user == null)
                     return Unauthorized(new 
                     {
                         success = false,
-                        message = "Неверный email или пароль"
+                        message = "Неверный логин или пароль"
                     });
-                return Ok(new 
+
+                return Ok(new
                 {
                     success = true,
                     message = "Вход выполнен успешно",
