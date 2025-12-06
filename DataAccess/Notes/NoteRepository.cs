@@ -23,6 +23,15 @@ public class NoteRepository(AppContext context) : INoteRepository
             .Include(p => p.Likes)
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
+    public async Task<List<Note>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await context.Notes
+            .Include(n => n.Author)
+            .Include(n => n.Category)
+            .Where(n => n.IsActive)
+            .OrderByDescending(n => n.Created)
+            .ToListAsync(cancellationToken);
+    }
     
     public async Task<List<Note>> GetByCategoryIdAsync(Guid categoryId, CancellationToken cancellationToken = default)
     {

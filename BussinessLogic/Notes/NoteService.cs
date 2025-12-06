@@ -1,4 +1,5 @@
-﻿using BussinessLogic.Exceptions;
+﻿using BussinessLogic.DTOs;
+using BussinessLogic.Exceptions;
 using DataAccess;
 using DataAccess.Category;
 using DataAccess.Users;
@@ -8,7 +9,7 @@ namespace BussinessLogic;
 public class NoteService(INoteRepository noteRepository, IUserRepository userRepository,ICategoryRepository categoryRepository) : INoteService
 {
     
-    public async Task CreateAsync(Guid userId, Guid categoryId, string title, string content, CancellationToken cancellationToken = default)
+    public async  Task<NoteDto> CreateAsync(Guid userId, Guid categoryId, string title, string content, CancellationToken cancellationToken = default)
     {
         // Проверка на существование пользователя
         var user = await userRepository.GetByIdAsync(userId, cancellationToken);
@@ -26,28 +27,28 @@ public class NoteService(INoteRepository noteRepository, IUserRepository userRep
 
         var note = new Note
         {
-            Title = title,           // Добавлен заголовок
-            Content = content,       // Контент
+            Title = title,         
+            Content = content,      
             AuthorId = userId,
-            CategoryId = categoryId, // Добавлена категория
+            CategoryId = categoryId, 
             Created = DateTime.UtcNow,
             Updated = DateTime.UtcNow
         };
         await noteRepository.CreateAsync(note, cancellationToken);
 
-        // Обновляем счетчик постов пользователя 
         user.PostCount++;
-    
-        // Автоматическое повышение до Expert при достижении 10 постов
+
         if (user.PostCount >= 10 && user.Role == "Novice")
         {
             user.Role = "Expert";
         }
     
         await userRepository.UpdateAsync(user, cancellationToken);
+        return MapToDto(note, user, category);
     }
     
-    public async Task<string> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    // ПОЛУЧЕНИЕ ПО ID
+    public async Task<NoteDto> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var note = await noteRepository.GetByIdAsync(id, cancellationToken);
         if (note == null)
@@ -55,10 +56,14 @@ public class NoteService(INoteRepository noteRepository, IUserRepository userRep
             throw new ArgumentException("Note not found");
         }
 
-        return $"Title: {note.Title}\nContent: {note.Content}"; 
+        var author = await userRepository.GetByIdAsync(note.AuthorId, cancellationToken);
+        var category = await categoryRepository.GetByIdAsync(note.CategoryId, cancellationToken);
+        
+        return MapToDto(note, author, category);
     }
 
-    public async Task UpdateAsync(Guid id, string newTitle, string newText,  CancellationToken cancellationToken = default)
+    // ОБНОВЛЕНИЕ
+    public async  Task<NoteDto> UpdateAsync(Guid id, string newTitle, string newText,  CancellationToken cancellationToken = default)
     {
         var note = await noteRepository.GetByIdAsync(id, cancellationToken);
         if (note == null)
@@ -70,6 +75,11 @@ public class NoteService(INoteRepository noteRepository, IUserRepository userRep
         note.Updated = DateTime.UtcNow;
         
         await noteRepository.UpdateAsync(note, cancellationToken);
+        
+        var author = await userRepository.GetByIdAsync(note.AuthorId, cancellationToken);
+        var category = await categoryRepository.GetByIdAsync(note.CategoryId, cancellationToken);
+        
+        return MapToDto(note, author, category);
     }
     
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
@@ -82,20 +92,68 @@ public class NoteService(INoteRepository noteRepository, IUserRepository userRep
         await noteRepository.DeleteAsync(note, cancellationToken);
     }
     
-    public async Task<string> GetUserNotesAsync(Guid userId, CancellationToken cancellationToken = default)
+    //строку с заметками пользователя
+    public async Task<IEnumerable<NoteDto>> GetUserNotesAsync(Guid userId, CancellationToken cancellationToken = default)
     {
+        // 1. Получаем заметки пользователя
         var notes = await noteRepository.GetByUserIdAsync(userId, cancellationToken);
+    
         if (!notes.Any())
         {
-            return "No notes found for this user";
+            return Enumerable.Empty<NoteDto>(); 
         }
-
-        var result = $"User {userId} notes:\n";
+        
+        var result = new List<NoteDto>();
         foreach (var note in notes)
         {
-            result += $"- {note.Id} (Created: {note.Created})\n";
+            if (!note.IsActive) continue; 
+            
+            var author = await userRepository.GetByIdAsync(note.AuthorId, cancellationToken);
+            var category = await categoryRepository.GetByIdAsync(note.CategoryId, cancellationToken);
+        
+            result.Add(MapToDto(note, author, category));
         }
-
+    
         return result;
+    }
+    
+    // ПОЛУЧЕНИЕ ВСЕХ ЗАМЕТОК
+    public async Task<IEnumerable<NoteDto>> GetAllNotesAsync(CancellationToken cancellationToken = default)
+    {
+        var notes = await noteRepository.GetAllAsync(cancellationToken);
+        
+        var result = new List<NoteDto>();
+        foreach (var note in notes)
+        {
+            if (!note.IsActive) continue;
+            
+            var author = await userRepository.GetByIdAsync(note.AuthorId, cancellationToken);
+            var category = await categoryRepository.GetByIdAsync(note.CategoryId, cancellationToken);
+            
+            result.Add(MapToDto(note, author, category));
+        }
+        
+        return result;
+    }
+    
+    // Метод для преобразования Note в NoteDto
+    private NoteDto MapToDto(Note note, User? author, Category? category)
+    {
+        return new NoteDto
+        {
+            Id = note.Id,
+            Title = note.Title,
+            Content = note.Content,
+            CategoryId = note.CategoryId,
+            CategoryName = category?.Name ?? "Без категории",
+            AuthorId = note.AuthorId,
+            AuthorName = author?.Username ?? "Аноним",
+            Created = note.Created,
+            Updated = note.Updated,
+            ViewCount = note.ViewCount,
+            LikeCount = note.LikeCount,
+            IsPinned = note.IsPinned,
+            IsSolved = note.IsSolved
+        };
     }
 }
