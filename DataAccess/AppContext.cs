@@ -1,5 +1,4 @@
 ﻿using DataAccess.Users;
-using DataAccess.Category;
 using Microsoft.EntityFrameworkCore;
 //using DataAccess.Notes;
 
@@ -16,7 +15,7 @@ public class AppContext(DbContextOptions<AppContext> options) : DbContext(option
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // User  конфигурация
+        // User  конфигурация   
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(u => u.Id);
@@ -69,10 +68,10 @@ public class AppContext(DbContextOptions<AppContext> options) : DbContext(option
 
 
         modelBuilder.Entity<Category.Category>().HasData(
-            new Category.Category { Id = Guid.NewGuid(), Name = "API Docs", Description = "Обсуждения web API и разработки", PostCount = 45, OrderIndex = 1 },
-            new Category.Category { Id = Guid.NewGuid(), Name = "Обсуждения", Description = "Общие обсуждения", PostCount = 23, OrderIndex = 2 },
-            new Category.Category { Id = Guid.NewGuid(), Name = "Вопросы", Description = "Задавайте вопросы", PostCount = 67, OrderIndex = 3 },
-            new Category.Category { Id = Guid.NewGuid(), Name = "Идеи", Description = "Предложения и идеи", PostCount = 12, OrderIndex = 4 }
+            new Category.Category { Id = Guid.NewGuid(), Name = "API Docs", Description = "Обсуждения web API и разработки", OrderIndex = 1 },
+            new Category.Category { Id = Guid.NewGuid(), Name = "Обсуждения", Description = "Общие обсуждения", OrderIndex = 2 },
+            new Category.Category { Id = Guid.NewGuid(), Name = "Вопросы", Description = "Задавайте вопросы", OrderIndex = 3 },
+            new Category.Category { Id = Guid.NewGuid(), Name = "Идеи", Description = "Предложения и идеи", OrderIndex = 4 }
         );
         
         base.OnModelCreating(modelBuilder);

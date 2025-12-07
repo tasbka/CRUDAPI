@@ -57,39 +57,39 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("cb257c7d-aeb3-4233-a3ce-0fe419f956e0"),
-                            CreatedAt = new DateTime(2025, 12, 2, 16, 5, 31, 657, DateTimeKind.Utc).AddTicks(8110),
+                            Id = new Guid("d9a0a2cf-af10-47ba-a2d2-d2365c6d20cc"),
+                            CreatedAt = new DateTime(2025, 12, 7, 19, 20, 6, 262, DateTimeKind.Utc).AddTicks(5647),
                             Description = "Обсуждения web API и разработки",
                             Name = "API Docs",
                             OrderIndex = 1,
-                            PostCount = 45
+                            PostCount = 0
                         },
                         new
                         {
-                            Id = new Guid("fa709d13-5856-47c3-a557-3f2949fe7608"),
-                            CreatedAt = new DateTime(2025, 12, 2, 16, 5, 31, 657, DateTimeKind.Utc).AddTicks(8119),
+                            Id = new Guid("4e7a52bb-4c31-4b01-8ee2-4c2145f8836d"),
+                            CreatedAt = new DateTime(2025, 12, 7, 19, 20, 6, 262, DateTimeKind.Utc).AddTicks(5652),
                             Description = "Общие обсуждения",
                             Name = "Обсуждения",
                             OrderIndex = 2,
-                            PostCount = 23
+                            PostCount = 0
                         },
                         new
                         {
-                            Id = new Guid("f9768b23-71a9-493f-a04e-5e5f7db54fb3"),
-                            CreatedAt = new DateTime(2025, 12, 2, 16, 5, 31, 657, DateTimeKind.Utc).AddTicks(8124),
+                            Id = new Guid("4b6e46ca-da99-4371-bd1a-c1f40e5a9a11"),
+                            CreatedAt = new DateTime(2025, 12, 7, 19, 20, 6, 262, DateTimeKind.Utc).AddTicks(5654),
                             Description = "Задавайте вопросы",
                             Name = "Вопросы",
                             OrderIndex = 3,
-                            PostCount = 67
+                            PostCount = 0
                         },
                         new
                         {
-                            Id = new Guid("de026b5f-230b-4ef4-b318-a2bef0bcbdc2"),
-                            CreatedAt = new DateTime(2025, 12, 2, 16, 5, 31, 657, DateTimeKind.Utc).AddTicks(8129),
+                            Id = new Guid("11587dd6-3b06-4ecc-86ea-1eec2e919436"),
+                            CreatedAt = new DateTime(2025, 12, 7, 19, 20, 6, 262, DateTimeKind.Utc).AddTicks(5668),
                             Description = "Предложения и идеи",
                             Name = "Идеи",
                             OrderIndex = 4,
-                            PostCount = 12
+                            PostCount = 0
                         });
                 });
 
