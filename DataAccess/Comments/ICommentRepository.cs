@@ -2,7 +2,7 @@
 
 public interface ICommentRepository
 {
-    // Получение комментариев
+    // Получение комментариев 
     Task<Comment?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<List<Comment>> GetByNoteIdAsync(Guid noteId, CancellationToken cancellationToken = default);
     Task<List<Comment>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
