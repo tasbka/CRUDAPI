@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DataAccess.Comments;
 using DataAccess.Users;
 
 namespace DataAccess;
@@ -34,4 +35,6 @@ public class Note
     public virtual Category.Category Category { get; set; } = null!;
     public virtual User Author { get; set; } = null!;
     public virtual ICollection<PostLike> Likes { get; set; } = new List<PostLike>();
+    
+    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 }

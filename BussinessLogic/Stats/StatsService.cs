@@ -44,7 +44,6 @@ public class StatsService : IStatsService
     
     public async Task<IEnumerable<ActiveUserDto>> GetActiveUsersAsync(int count = 4, CancellationToken cancellationToken = default)
     {
-        // Получаем пользователей, отсортированных по приоритету
         var activeUsers = await _context.Users
             .Where(u => u.IsActive)
             .OrderByDescending(u => u.Role == "Мудрец" ? 3 : u.Role == "Админ" ? 2 : u.Role == "Эксперт" ? 1 : 0)
@@ -96,7 +95,6 @@ public class StatsService : IStatsService
             });
         }
         
-        // Сортируем по количеству тем
         return result.OrderByDescending(c => c.TopicCount);
     }
     

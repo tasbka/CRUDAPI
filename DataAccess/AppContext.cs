@@ -1,4 +1,5 @@
-﻿using DataAccess.Users;
+﻿using DataAccess.Comments;
+using DataAccess.Users;
 using Microsoft.EntityFrameworkCore;
 //using DataAccess.Notes;
 
@@ -8,10 +9,13 @@ namespace DataAccess;
 
 public class AppContext(DbContextOptions<AppContext> options) : DbContext(options)
 {
+    
     public DbSet<User> Users { get; set; }
     public DbSet<Category.Category> Categories { get; set; }
     public DbSet<Note> Notes { get; set; }
     public DbSet<PostLike> PostLikes { get; set; }
+    
+    public DbSet<Comment> Comments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -64,6 +68,31 @@ public class AppContext(DbContextOptions<AppContext> options) : DbContext(option
                 .OnDelete(DeleteBehavior.Cascade);
                   
             entity.HasIndex(pl => new { pl.NoteId, pl.UserId }).IsUnique();
+        });
+        
+        // Comment конфигурация
+        modelBuilder.Entity<Comment>(entity =>
+        {
+            entity.HasKey(c => c.Id);
+            
+            entity.HasOne(c => c.Note)
+                .WithMany(n => n.Comments)
+                .HasForeignKey(c => c.NoteId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            entity.HasOne(c => c.Author)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            entity.HasOne(c => c.ParentComment)
+                .WithMany(pc => pc.Replies)
+                .HasForeignKey(c => c.ParentCommentId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            entity.HasIndex(c => c.NoteId);
+            entity.HasIndex(c => c.AuthorId);
+            entity.HasIndex(c => c.CreatedAt);
         });
 
 

@@ -1,9 +1,11 @@
 using BusinessLogic.Users;
 using BussinessLogic;
+using BussinessLogic.Comments;
 using BussinessLogic.Stats;
 using BussinessLogic.Users;
 using DataAccess;
 using DataAccess.Category;
+using DataAccess.Comments;
 using DataAccess.Users;
 using DataAccess.Notes;
 
@@ -45,7 +47,9 @@ builder.Services.AddScoped<INoteRepository, NoteRepository>();
 builder.Services.AddScoped<INoteService, NoteService>();
 
 builder.Services.AddScoped<IStatsService, StatsService>();
-//builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 
 var app = builder.Build();
 
