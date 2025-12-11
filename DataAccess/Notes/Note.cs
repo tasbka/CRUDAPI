@@ -27,6 +27,8 @@ public class Note
     public bool IsSolved { get; set; } = false;
     
     public int ViewCount { get; set; } = 0;
+
+    public int CountComments { get; set; } = 0;
     
     public int LikeCount { get; set; } = 0;
     

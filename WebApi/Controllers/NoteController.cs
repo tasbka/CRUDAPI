@@ -74,7 +74,7 @@ public class NoteController : ControllerBase
                 author = note.AuthorName,
                 authorId = note.AuthorId,
                 categoryId = note.CategoryId, 
-                replies = 0, 
+                replies = note.CountComments, 
                 views = note.ViewCount,
                 likes = note.LikeCount,          
                 timestamp = FormatTime(note.Created),

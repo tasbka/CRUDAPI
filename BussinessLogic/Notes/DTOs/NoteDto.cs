@@ -11,6 +11,7 @@ public class NoteDto
     public string AuthorName { get; set; } = string.Empty;
     public DateTime Created { get; set; }
     public DateTime? Updated { get; set; }
+    public int CountComments{ get; set; }
     public int ViewCount { get; set; }
     public int LikeCount { get; set; }
     public bool IsPinned { get; set; }

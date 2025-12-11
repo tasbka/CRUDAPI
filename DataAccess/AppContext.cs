@@ -97,7 +97,7 @@ public class AppContext(DbContextOptions<AppContext> options) : DbContext(option
 
 
         modelBuilder.Entity<Category.Category>().HasData(
-            new Category.Category { Id = Guid.NewGuid(), Name = "API Docs", Description = "Обсуждения web API и разработки", OrderIndex = 1 },
+            new Category.Category { Id = Guid.NewGuid(), Name = "API Docs", Description = "Обсуждения web API", OrderIndex = 1 },
             new Category.Category { Id = Guid.NewGuid(), Name = "Обсуждения", Description = "Общие обсуждения", OrderIndex = 2 },
             new Category.Category { Id = Guid.NewGuid(), Name = "Вопросы", Description = "Задавайте вопросы", OrderIndex = 3 },
             new Category.Category { Id = Guid.NewGuid(), Name = "Идеи", Description = "Предложения и идеи", OrderIndex = 4 }

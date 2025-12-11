@@ -56,12 +56,14 @@ public class CommentService  : ICommentService
         var createdComment = await _commentRepository.CreateAsync(comment, cancellationToken);
         
         author.PostCount++;
+        note.CountComments++;
         
         UpdateUserRole(author);
         
         await _userRepository.UpdateAsync(author, cancellationToken);
         
         return MapToDto(createdComment, author);
+        
     }
     
     public async Task<CommentDto> GetCommentByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -113,6 +115,20 @@ public class CommentService  : ICommentService
         if (comment == null)
             throw new ArgumentException("Комментарий не найден");
         
+        var note = await _noteRepository.GetByIdAsync(comment.NoteId, cancellationToken);
+        if (note != null)
+        {
+            note.CountComments = Math.Max(0, note.CountComments - 1);
+            await _noteRepository.UpdateAsync(note, cancellationToken);
+        }
+        
+        var author = await _userRepository.GetByIdAsync(comment.AuthorId, cancellationToken);
+        if (author != null)
+        {
+            author.PostCount = Math.Max(0, author.PostCount - 1);
+            await _userRepository.UpdateAsync(author, cancellationToken);
+        }
+    
         await _commentRepository.DeleteAsync(comment, cancellationToken);
     }
     

@@ -52,13 +52,13 @@ namespace DataAccess.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a58c2206-36b5-49e1-ac1e-e8c086b2c8a6"),
-                            CreatedAt = new DateTime(2025, 12, 8, 16, 10, 57, 317, DateTimeKind.Utc).AddTicks(5361),
+                            Id = new Guid("97bc9651-6ddb-4f75-b33e-368d51e99eca"),
+                            CreatedAt = new DateTime(2025, 12, 11, 16, 59, 18, 110, DateTimeKind.Utc).AddTicks(4769),
                             Description = "Обсуждения web API и разработки",
                             Name = "API Docs",
                             OrderIndex = 1,
@@ -66,8 +66,8 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f517476a-e406-4364-8bbc-5b17ee8c0d95"),
-                            CreatedAt = new DateTime(2025, 12, 8, 16, 10, 57, 317, DateTimeKind.Utc).AddTicks(5383),
+                            Id = new Guid("688e65bc-061c-4aad-890e-02da095b18f5"),
+                            CreatedAt = new DateTime(2025, 12, 11, 16, 59, 18, 110, DateTimeKind.Utc).AddTicks(4776),
                             Description = "Общие обсуждения",
                             Name = "Обсуждения",
                             OrderIndex = 2,
@@ -75,8 +75,8 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("46b86506-60c3-4b4a-9def-1db33b1078ed"),
-                            CreatedAt = new DateTime(2025, 12, 8, 16, 10, 57, 317, DateTimeKind.Utc).AddTicks(5385),
+                            Id = new Guid("e8c33f72-7397-4d8e-af22-73ec7c31f3ac"),
+                            CreatedAt = new DateTime(2025, 12, 11, 16, 59, 18, 110, DateTimeKind.Utc).AddTicks(4778),
                             Description = "Задавайте вопросы",
                             Name = "Вопросы",
                             OrderIndex = 3,
@@ -84,8 +84,8 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c627d890-9c9d-42d0-9c96-36746889d4a7"),
-                            CreatedAt = new DateTime(2025, 12, 8, 16, 10, 57, 317, DateTimeKind.Utc).AddTicks(5387),
+                            Id = new Guid("679705ca-c8a4-4191-9592-8f7b149239a0"),
+                            CreatedAt = new DateTime(2025, 12, 11, 16, 59, 18, 110, DateTimeKind.Utc).AddTicks(4797),
                             Description = "Предложения и идеи",
                             Name = "Идеи",
                             OrderIndex = 4,
@@ -132,7 +132,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ParentCommentId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("DataAccess.Note", b =>
@@ -151,6 +151,9 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(5000)
                         .HasColumnType("character varying(5000)");
+
+                    b.Property<int>("CountComments")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
@@ -184,7 +187,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Notes", (string)null);
+                    b.ToTable("Notes");
                 });
 
             modelBuilder.Entity("DataAccess.PostLike", b =>
@@ -209,7 +212,7 @@ namespace DataAccess.Migrations
                     b.HasIndex("NoteId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("PostLikes", (string)null);
+                    b.ToTable("PostLikes");
                 });
 
             modelBuilder.Entity("DataAccess.Users.User", b =>
@@ -257,7 +260,7 @@ namespace DataAccess.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("DataAccess.Comments.Comment", b =>

@@ -42,7 +42,8 @@ public class NoteService(INoteRepository noteRepository, IUserRepository userRep
         {
             user.Role = "Expert";
         }
-    
+        
+        
         await userRepository.UpdateAsync(user, cancellationToken);
         return MapToDto(note, user, category);
     }
@@ -151,6 +152,7 @@ public class NoteService(INoteRepository noteRepository, IUserRepository userRep
             Created = note.Created,
             Updated = note.Updated,
             ViewCount = note.ViewCount,
+            CountComments = note.CountComments,
             LikeCount = note.LikeCount,
             IsPinned = note.IsPinned,
             IsSolved = note.IsSolved
