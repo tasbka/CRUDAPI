@@ -1,4 +1,5 @@
-﻿using DataAccess;
+﻿using BussinessLogic.DTOs;
+using DataAccess;
 using DataAccess.Users;
 
 namespace BussinessLogic;
@@ -16,7 +17,7 @@ public class PostLikeService : IPostLikeService
         _userRepository = userRepository;
     }
 
-    public async Task LikeNoteAsync(Guid noteId, Guid userId, CancellationToken cancellationToken = default)
+    public async Task<LikeResponseDto> LikeNoteAsync(Guid noteId, Guid userId, CancellationToken cancellationToken = default)
     {
         // проверка на существование заметки
         var note = await _noteRepository.GetByIdAsync(noteId, cancellationToken);
@@ -46,13 +47,20 @@ public class PostLikeService : IPostLikeService
         };
 
         await _postLikeRepository.CreateAsync(noteLike, cancellationToken);
-
-        // ОБНОВИТЬ КОЛ-ВО ЛАЙКОВ
+        
         note.LikeCount++;
         await _noteRepository.UpdateAsync(note, cancellationToken);
+        
+        var likeCount = await GetLikeCountAsync(noteId, cancellationToken);
+        
+        return new LikeResponseDto
+        {
+            LikeCount = likeCount,
+            IsLikedByCurrentUser = true
+        };
     }
 
-    public async Task UnlikeNoteAsync(Guid noteId, Guid userId, CancellationToken cancellationToken = default)
+    public async Task<LikeResponseDto> UnlikeNoteAsync(Guid noteId, Guid userId, CancellationToken cancellationToken = default)
     {
         var existingLike = await _postLikeRepository.GetByNoteAndUserAsync(noteId, userId, cancellationToken);
         if (existingLike == null)
@@ -69,6 +77,14 @@ public class PostLikeService : IPostLikeService
             note.LikeCount = Math.Max(0, note.LikeCount - 1);
             await _noteRepository.UpdateAsync(note, cancellationToken);
         }
+        
+        var likeCount = await GetLikeCountAsync(noteId, cancellationToken);
+        
+        return new LikeResponseDto
+        {
+            LikeCount = likeCount,
+            IsLikedByCurrentUser = false
+        };
     }
 
     public async Task<int> GetLikeCountAsync(Guid noteId, CancellationToken cancellationToken = default)
@@ -79,5 +95,21 @@ public class PostLikeService : IPostLikeService
     public async Task<bool> IsNoteLikedByUserAsync(Guid noteId, Guid userId, CancellationToken cancellationToken = default)
     {
         return await _postLikeRepository.ExistsAsync(noteId, userId, cancellationToken);
+    }
+    
+    public async Task<LikeResponseDto> ToggleLikeAsync(Guid noteId, Guid userId, CancellationToken cancellationToken = default)
+    {
+        var isLiked = await IsNoteLikedByUserAsync(noteId, userId, cancellationToken);
+        LikeResponseDto result;
+    
+        if (isLiked)
+        {
+            result = await UnlikeNoteAsync(noteId, userId, cancellationToken);
+        }
+        else
+        {
+            result = await LikeNoteAsync(noteId, userId, cancellationToken);
+        }
+        return result;
     }
 }
