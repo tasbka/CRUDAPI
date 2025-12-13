@@ -1,4 +1,6 @@
-﻿using BussinessLogic;
+﻿using System.Security.Claims;
+using BussinessLogic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 
@@ -232,20 +234,90 @@ public class NoteController : ControllerBase
     }
 
     // УДАЛЕНИЕ ЗАМЕТКИ
-    [HttpDelete("{id:guid}")]
+    // DELETE: api/note/{id} 
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteNoteAsync([FromRoute] Guid id)
     {
         try
         {
-            Console.WriteLine("Calling NoteService.DeleteAsync...");
+            Console.WriteLine($"Вызов DeleteNoteAsync для id: {id}");
+        
+            // Вызываем реальный метод удаления из сервиса
             await _noteService.DeleteAsync(id);
+        
+            Console.WriteLine($"Тема {id} успешно удалена");
+        
+            return Ok(new
+            {
+                success = true,
+                message = $"Тема успешно удалена",
+                id = id,
+                timestamp = DateTime.UtcNow
+            });
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"ArgumentException: {ex.Message}");
+            return NotFound(new
+            {
+                success = false,
+                message = ex.Message
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Unhandled Exception: {ex.Message}");
+            Console.WriteLine($"StackTrace: {ex.StackTrace}");
+            return StatusCode(500, new
+            {
+                success = false,
+                message = "Ошибка при удалении темы",
+                error = ex.Message
+            });
+        }
+    }
+    
+    // PATCH: api/note/{id}/pin - ЗАКРЕПИТЬ/ОТКРЕПИТЬ НАДО УБРАТЬ АВТОРИЗАЦИЮ, ПЕРЕДЕЛАТЬ МЕТОД
+   /* [HttpPatch("{id}/pin")]
+    public async Task<IActionResult> TogglePinAsync([FromRoute] Guid id, [FromBody] TogglePinRequest request)
+    {
+        try
+        {
+            // Получаем информацию о текущем пользователе
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var currentUserRole = User.FindFirst(ClaimTypes.Role)?.Value ?? "Novice";
 
-            Console.WriteLine("Note deleted successfully!");
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                return Unauthorized(new
+                {
+                    success = false,
+                    message = "Пользователь не авторизован"
+                });
+            }
+
+            Console.WriteLine($"Закрепление темы {id} пользователем {currentUserId} с ролью {currentUserRole}");
+
+            await _noteService.TogglePinAsync(
+                id, 
+                request.IsPinned, 
+                Guid.Parse(currentUserId), 
+                currentUserRole
+            );
 
             return Ok(new
             {
                 success = true,
-                message = "Тема удалена успешно"
+                message = request.IsPinned ? "Тема закреплена" : "Тема откреплена"
+            });
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            Console.WriteLine($"UnauthorizedAccessException: {ex.Message}");
+            return StatusCode(403, new
+            {
+                success = false,
+                message = ex.Message
             });
         }
         catch (ArgumentException ex)
@@ -263,11 +335,12 @@ public class NoteController : ControllerBase
             return StatusCode(500, new
             {
                 success = false,
-                message = "Ошибка при удалении темы"
+                message = "Ошибка при изменении статуса закрепления",
+                details = ex.Message
             });
         }
     }
-    
+    */
     // Вспомогательный метод для форматирования времени
     private string FormatTime(DateTime date)
     {
@@ -291,6 +364,11 @@ public class NoteController : ControllerBase
         public string Title { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
     }
+
+    public class TogglePinRequest
+    {
+        public bool IsPinned { get; set; }
+    }                                                                                                                                     
 
     public class UpdateNoteRequest
     {

@@ -10,4 +10,6 @@ public interface INoteService
     Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
     Task<IEnumerable<NoteDto>> GetUserNotesAsync(Guid userId, CancellationToken cancellationToken = default);
     Task<IEnumerable<NoteDto>> GetAllNotesAsync(CancellationToken cancellationToken = default);
+   // Task DeleteWithPermissionCheckAsync(Guid noteId, Guid userId, string userRole, CancellationToken cancellationToken = default);
+    //Task TogglePinAsync(Guid noteId, bool isPinned, Guid userId, string userRole, CancellationToken cancellationToken = default);
 }

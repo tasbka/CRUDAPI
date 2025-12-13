@@ -8,7 +8,7 @@ using DataAccess.Category;
 using DataAccess.Comments;
 using DataAccess.Users;
 using DataAccess.Notes;
-
+using Microsoft.AspNetCore.Authentication.Cookies;
 using WebApi.Infrastructure;
 
 
@@ -16,14 +16,35 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "TalkHub.Auth";
+        options.LoginPath = "/api/Users/login";
+        options.LogoutPath = "/api/Users/logout";
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+        options.SlidingExpiration = true;
+        options.AccessDeniedPath = "/api/Users/accessdenied";
+        
+        // Для разработки
+        options.Cookie.SecurePolicy = CookieSecurePolicy.None; // Для HTTP
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.Cookie.HttpOnly = true;
+        options.Cookie.IsEssential = true;
+    });
+
+builder.Services.AddAuthorization();
+
 builder.Services.AddCors(options =>
 {
+    // Вариант A: Для разработки (если не работает с указанным origin)
     options.AddPolicy(MyAllowSpecificOrigins,
         policy =>
         {
-            policy.AllowAnyOrigin()
+            policy.WithOrigins("http://localhost:3000", "https://localhost:3000") // Укажите оба протокола
                 .AllowAnyHeader()
-                .AllowAnyMethod();
+                .AllowAnyMethod()
+                .AllowCredentials(); // Для cookies
         });
 });
 
@@ -62,6 +83,7 @@ app.UseRouting();
 app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
+    
 app.MapControllers();
 
 app.Run();
