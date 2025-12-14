@@ -3,12 +3,14 @@ using BussinessLogic;
 using BussinessLogic.Comments;
 using BussinessLogic.Stats;
 using BussinessLogic.Users;
+using BussinessLogic.Users.DTOs;
 using DataAccess;
 using DataAccess.Category;
 using DataAccess.Comments;
 using DataAccess.Users;
 using DataAccess.Notes;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using WebApi.Infrastructure;
 
 
@@ -26,7 +28,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.SlidingExpiration = true;
         options.AccessDeniedPath = "/api/Users/accessdenied";
         
-        // Для разработки
         options.Cookie.SecurePolicy = CookieSecurePolicy.None; // Для HTTP
         options.Cookie.SameSite = SameSiteMode.Lax;
         options.Cookie.HttpOnly = true;
@@ -37,7 +38,6 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
-    // Вариант A: Для разработки (если не работает с указанным origin)
     options.AddPolicy(MyAllowSpecificOrigins,
         policy =>
         {
@@ -54,7 +54,9 @@ if (connectionString != null) builder.Services.AddDataAccess(connectionString);
 builder.Services.AddBusinessLogic();
 builder.Services.AddControllers(opts => opts.Filters.Add<ExceptionFilter>());
 builder.Services.AddSwaggerGen();
-    
+
+builder.Services.AddScoped<PasswordHasher>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 

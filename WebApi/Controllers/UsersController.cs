@@ -138,7 +138,7 @@ public class UsersController : ControllerBase
                     AllowRefresh = true
                 };
             
-                // Создаем cookie
+                // Создание cookie
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity),
@@ -152,6 +152,7 @@ public class UsersController : ControllerBase
             }
             catch (Exception ex)
             {
+                
                 return StatusCode(500, new 
                 {
                     success = false,
@@ -159,36 +160,7 @@ public class UsersController : ControllerBase
                 });
             }
         }
-        /*
 
-               [HttpPost]
-               public async Task<IActionResult> CreateAsync([FromBody] AddUserRequest request)
-               {
-                   try
-                   {
-                       await _userService.CreateAsync(request.Username, request.Email, request.Password);
-                       return Ok();
-                   }
-                   catch (ArgumentException ex)
-                   {
-                       return BadRequest(ex.Message);
-                   }
-               }
-
-             [HttpGet("{id:guid}")]
-               public async Task<IActionResult> GetByIdAsync(Guid id)
-               {
-                   try
-                   {
-                       var user = await _userService.GetByIdAsync(id);
-                       return Ok(user);
-                   }
-                   catch (ArgumentException ex)
-                   {
-                       return NotFound(ex.Message);
-                   }
-               }
-               */
        [HttpGet("{id:guid}")]
        public async Task<IActionResult> GetByIdAsync(Guid id)
        {

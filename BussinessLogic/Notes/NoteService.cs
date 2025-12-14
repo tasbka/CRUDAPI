@@ -137,29 +137,6 @@ public class NoteService(INoteRepository noteRepository, IUserRepository userRep
         return result;
     }
     
-
-    // Закрепить/открепить тему
-    /*public async Task TogglePinAsync(Guid noteId, bool isPinned, Guid userId, string userRole, CancellationToken cancellationToken = default)
-    {
-        var note = await noteRepository.GetByIdAsync(noteId, cancellationToken);
-        if (note == null)
-        {
-            throw new ArgumentException("Тема не найдена");
-        }
-
-        // Проверяем права доступа - только админы и модераторы
-        bool isAdminOrModerator = userRole == "Admin" || userRole == "Moderator";
-        if (!isAdminOrModerator)
-        {
-            throw new UnauthorizedAccessException("Только администраторы и модераторы могут закреплять темы");
-        }
-
-        note.IsPinned = isPinned;
-        note.Updated = DateTime.UtcNow;
-        
-        await noteRepository.UpdateAsync(note, cancellationToken);
-    }
-    */
     // Метод для преобразования Note в NoteDto
     private NoteDto MapToDto(Note note, User? author, Category? category)
     {
